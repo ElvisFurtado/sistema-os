@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
     <header>
         <img src="logo.furtado.jpeg" alt="Logo Furtado" class="logo">
         <h1>Abertura de Ordem de Serviço</h1>
-        <p>Registo de equipamentos para montagem e manutenção</p>
+        <p>Registro de equipamentos para montagem e manutenção</p>
     </header>
     <main>
         <form id="form-os">
@@ -18,7 +18,7 @@
                 <legend>Dados do Cliente</legend>
                 <label for="nomeCliente">Nome do Cliente:</label>
                 <input type="text" id="nomeCliente" name="nomeCliente" required placeholder="Ex: João da Silva">
-                <label for="contatoCliente">Contacto (Instagram / WhatsApp):</label>
+                <label for="contatoCliente">Contato (Instagram / WhatsApp):</label>
                 <input type="text" id="contatoCliente" name="contatoCliente" required placeholder="Ex: @cliente ou (19) 99999-9999">
             </fieldset>
             <fieldset>
@@ -26,7 +26,7 @@
                 <label for="tipoEquipamento">Tipo de Equipamento:</label>
                 <select id="tipoEquipamento" name="tipoEquipamento" required>
                     <option value="" disabled selected>Selecionar...</option>
-                    <option value="notebook">Portátil</option>
+                    <option value="notebook">Notebook</option>
                     <option value="desktop">Computador de Mesa (PC Gamer/Custom)</option>
                     <option value="impressora">Impressora</option>
                     <option value="smartphone">Smartphone</option>
@@ -34,26 +34,24 @@
                 <label for="modeloEquipamento">Marca e Modelo:</label>
                 <input type="text" id="modeloEquipamento" name="modeloEquipamento" required placeholder="Ex: ASUS Vivobook 16X, Lenovo IdeaPad...">
                 <label for="especificacoes">Especificações / Componentes (Opcional):</label>
-                <textarea id="especificacoes" name="especificacoes" rows="2" placeholder="Ex: 24GB de RAM física, ecrã 40 pinos, etc."></textarea>
+                <textarea id="especificacoes" name="especificacoes" rows="2" placeholder="Ex: 24GB de RAM física, tela de 40 pinos, etc."></textarea>
             </fieldset>
             <fieldset>
                 <legend>Detalhes do Serviço</legend>
-                <label for="tipoServico">Serviço Pretendido:</label>
+                <label for="tipoServico">Serviço Desejado:</label>
                 <select id="tipoServico" name="tipoServico" required>
                     <option value="montagem">Montagem Personalizada</option>
                     <option value="manutencao_preventiva">Limpeza e Manutenção Preventiva</option>
-                    <option value="reparo_placa">Reparação de Hardware</option>
+                    <option value="reparo_placa">Reparo de Hardware</option>
                     <option value="troca_peca">Upgrade / Troca de Peça</option>
                     <option value="diagnostico">Diagnóstico</option>
                 </select>
                 <label for="descricaoProblema">Descrição do Problema ou Projeto:</label>
-                <textarea id="descricaoProblema" name="descricaoProblema" rows="4" required placeholder="Descreve o defeito relatado ou as peças pretendidas na montagem..."></textarea>
+                <textarea id="descricaoProblema" name="descricaoProblema" rows="4" required placeholder="Descreva o defeito relatado ou as peças desejadas na montagem..."></textarea>
             </fieldset>
-            <button type="submit">Guardar Ordem de Serviço</button>
+            <button type="submit">Salvar Ordem de Serviço</button>
         </form>
     </main>
-    
-    <!-- A alteração essencial para o Firebase funcionar -->
     <script type="module" src="script.js"></script>
     
     <div style="text-align: center; margin-top: 20px;">
