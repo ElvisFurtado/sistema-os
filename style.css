@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #0b1120;
+    color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 15px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 25px;
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    max-width: 120px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
+
+header h1 {
+    font-size: 1.5rem;
+    color: #f8fafc;
+    margin-bottom: 5px;
+}
+
+header p {
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+main {
+    width: 100%;
+    max-width: 600px;
+    background-color: #1e293b;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+fieldset {
+    border: none;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #334155;
+}
+
+fieldset:last-of-type {
+    border-bottom: none;
+    margin-bottom: 15px;
+}
+
+legend {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #cbd5e1;
+    margin-bottom: 6px;
+    margin-top: 15px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background-color: #0f172a;
+    color: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+button[type="submit"] {
+    width: 100%;
+    background-color: #2563eb;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #1d4ed8;
+}
+
+button[type="submit"]:active {
+    transform: translateY(1px);
+}
+
+@media (max-width: 480px) {
+    main {
+        padding: 20px 15px;
+    }
+    header h1 {
+        font-size: 1.3rem;
+    }
+}

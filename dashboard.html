@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controlo - Assistência</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0b1120; color: #e2e8f0; padding: 20px; max-width: 800px; margin: 0 auto; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: #1e293b; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); }
+        .header-info { display: flex; align-items: center; gap: 15px; }
+        .logo-dash { width: 60px; border-radius: 8px; }
+        header h2 { color: #f8fafc; margin: 0 0 5px 0; }
+        header p { color: #94a3b8; margin: 0; font-size: 0.9rem; }
+        .botoes-header { display: flex; gap: 10px; }
+        .btn-novo { background-color: #2563eb; color: #fff; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 0.9rem; }
+        .btn-novo:hover { background-color: #1d4ed8; }
+        .btn-sair { background-color: #7f1d1d; color: #fecaca; padding: 10px 15px; border: none; border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; }
+        .btn-sair:hover { background-color: #991b1b; }
+        
+        .status-resumo { display: flex; gap: 15px; margin-bottom: 20px; }
+        .box-resumo { background: #1e293b; padding: 15px; border-radius: 8px; flex: 1; text-align: center; border: 1px solid #334155; }
+        .box-resumo h3 { margin: 0; font-size: 1.5rem; color: #f8fafc; }
+        .box-resumo p { margin: 5px 0 0 0; font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; }
+
+        #lista-os { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .card-os { background: #1e293b; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); border-left: 5px solid #475569; position: relative; }
+        .card-os.status-aberta { border-left-color: #f59e0b; }
+        .card-os.status-andamento { border-left-color: #3b82f6; }
+        .card-os.status-concluida { border-left-color: #10b981; }
+        .card-os h3 { margin-top: 0; color: #f8fafc; font-size: 1.1rem; }
+        .card-os p { margin: 5px 0; font-size: 0.9rem; color: #cbd5e1; }
+        .badge-status { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; margin-top: 10px; background-color: #0f172a; color: #e2e8f0; text-transform: uppercase; }
+        .acoes { margin-top: 15px; display: flex; gap: 10px; border-top: 1px solid #334155; padding-top: 15px; }
+        .btn-acao { flex: 1; padding: 8px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: 0.2s; }
+        .btn-avancar { background-color: #1e3a8a; color: #bfdbfe; }
+        .btn-excluir { background-color: #7f1d1d; color: #fecaca; }
+        .mensagem-vazia { text-align: center; color: #94a3b8; grid-column: 1 / -1; padding: 40px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-info">
+            <img src="logo.furtado.jpeg" alt="Logo Furtado" class="logo-dash">
+            <div>
+                <h2>Painel de Controlo</h2>
+                <p>Gere os teus serviços em curso</p>
+            </div>
+        </div>
+        <div class="botoes-header">
+            <a href="index.html" class="btn-novo">+ Nova OS</a>
+            <button onclick="window.fazerLogout()" class="btn-sair">Sair</button>
+        </div>
+    </header>
+
+    <div class="status-resumo">
+        <div class="box-resumo">
+            <h3 id="cont-total">0</h3>
+            <p>Total de OS</p>
+        </div>
+        <div class="box-resumo" style="border-color: #f59e0b;">
+            <h3 id="cont-pendentes">0</h3>
+            <p>A aguardar</p>
+        </div>
+        <div class="box-resumo" style="border-color: #10b981;">
+            <h3 id="cont-concluidas">0</h3>
+            <p>Concluídas</p>
+        </div>
+    </div>
+
+    <main>
+        <div id="lista-os"></div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        if (sessionStorage.getItem('autenticado') !== 'true') {
+            window.location.href = 'login.html';
+        }
+
+        window.fazerLogout = function() {
+            sessionStorage.removeItem('autenticado');
+            window.location.href = 'login.html';
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAfkR_pn2-QHEXSpndmTUEHrNtn4E2FndU",
+            authDomain: "os-furtado-reparacoes.firebaseapp.com",
+            projectId: "os-furtado-reparacoes",
+            storageBucket: "os-furtado-reparacoes.firebasestorage.app",
+            messagingSenderId: "656707801667",
+            appId: "1:656707801667:web:a2eb560bf9ee5233ee3af6"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const containerLista = document.getElementById('lista-os');
+
+        const q = query(collection(db, "ordensServico"), orderBy("timestamp", "desc"));
+        
+        onSnapshot(q, (snapshot) => {
+            containerLista.innerHTML = '';
+            
+            let total = 0;
+            let pendentes = 0;
+            let concluidas = 0;
+
+            if(snapshot.empty) {
+                containerLista.innerHTML = '<div class="mensagem-vazia">Nenhuma Ordem de Serviço registada.</div>';
+            }
+
+            snapshot.forEach((documento) => {
+                const os = documento.data();
+                const idDocumento = documento.id; 
+
+                total++;
+                let classeStatus = '';
+                let textoStatus = '';
+                
+                if(os.status === 'aberta') { classeStatus = 'status-aberta'; textoStatus = 'A aguardar Avaliação'; pendentes++; }
+                else if(os.status === 'andamento') { classeStatus = 'status-andamento'; textoStatus = 'Na Bancada'; pendentes++; }
+                else { classeStatus = 'status-concluida'; textoStatus = 'Pronto / Entregue'; concluidas++; }
+
+                const card = document.createElement('div');
+                card.className = `card-os ${classeStatus}`;
+                
+                card.innerHTML = `
+                    <h3>${os.cliente} (OS: ${os.numero})</h3>
+                    <p><strong>Equipamento:</strong> ${os.modelo}</p>
+                    <p><strong>Serviço:</strong> ${os.tipoServico}</p>
+                    <p><strong>Data:</strong> ${os.dataCriacao}</p>
+                    <span class="badge-status">${textoStatus}</span>
+                    <div class="acoes">
+                        <button class="btn-acao btn-avancar" onclick="window.mudarStatus('${idDocumento}', '${os.status}')">Mudar Status</button>
+                        <button class="btn-acao btn-excluir" onclick="window.excluirOS('${idDocumento}')">Eliminar</button>
+                    </div>
+                `;
+                containerLista.appendChild(card);
+            });
+
+            document.getElementById('cont-total').innerText = total;
+            document.getElementById('cont-pendentes').innerText = pendentes;
+            document.getElementById('cont-concluidas').innerText = concluidas;
+        });
+
+        window.mudarStatus = async function(idDocumento, statusAtual) {
+            let novoStatus = 'aberta';
+            if(statusAtual === 'aberta') novoStatus = 'andamento';
+            else if(statusAtual === 'andamento') novoStatus = 'concluida';
+            
+            const osRef = doc(db, "ordensServico", idDocumento);
+            await updateDoc(osRef, { status: novoStatus });
+        }
+
+        window.excluirOS = async function(idDocumento) {
+            if(confirm('Tens a certeza que desejas eliminar esta OS da nuvem?')) {
+                await deleteDoc(doc(db, "ordensServico", idDocumento));
+            }
+        }
+    </script>
+</body>
+</html>

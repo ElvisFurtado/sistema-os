@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso Restrito - Furtado Reparações</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-container { margin-top: 5vh; }
+        .erro-login { color: #ef4444; font-size: 0.85rem; margin-top: 10px; display: none; text-align: center; }
+    </style>
+</head>
+<body>
+    <main class="login-container">
+        <header>
+            <img src="logo.furtado.jpeg" alt="Logo Furtado" class="logo">
+            <h1>Área do Técnico</h1>
+            <p>Acesso exclusivo ao painel de controlo</p>
+        </header>
+
+        <form id="form-login">
+            <label for="usuario">Utilizador:</label>
+            <input type="text" id="usuario" required>
+
+            <label for="senha">Palavra-passe:</label>
+            <input type="password" id="senha" required>
+
+            <p id="msg-erro" class="erro-login">Acesso negado. Verifica as tuas credenciais.</p>
+
+            <button type="submit">Entrar no Sistema</button>
+        </form>
+    </main>
+
+    <script>
+        document.getElementById('form-login').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const user = document.getElementById('usuario').value;
+            const pass = document.getElementById('senha').value;
+            const msgErro = document.getElementById('msg-erro');
+
+            if (user === 'furtado.elvis' && pass === 'admin321') {
+                sessionStorage.setItem('autenticado', 'true');
+                window.location.href = 'dashboard.html';
+            } else {
+                msgErro.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
