@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Controlo - Assistência</title>
+    <title>Painel de Controle - Assistência</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #0b1120; color: #e2e8f0; padding: 20px; max-width: 800px; margin: 0 auto; }
@@ -43,8 +43,8 @@
         <div class="header-info">
             <img src="logo.furtado.jpeg" alt="Logo Furtado" class="logo-dash">
             <div>
-                <h2>Painel de Controlo</h2>
-                <p>Gere os teus serviços em curso</p>
+                <h2>Painel de Controle</h2>
+                <p>Gerencie seus serviços em andamento</p>
             </div>
         </div>
         <div class="botoes-header">
@@ -60,7 +60,7 @@
         </div>
         <div class="box-resumo" style="border-color: #f59e0b;">
             <h3 id="cont-pendentes">0</h3>
-            <p>A aguardar</p>
+            <p>Aguardando</p>
         </div>
         <div class="box-resumo" style="border-color: #10b981;">
             <h3 id="cont-concluidas">0</h3>
@@ -108,7 +108,7 @@
             let concluidas = 0;
 
             if(snapshot.empty) {
-                containerLista.innerHTML = '<div class="mensagem-vazia">Nenhuma Ordem de Serviço registada.</div>';
+                containerLista.innerHTML = '<div class="mensagem-vazia">Nenhuma Ordem de Serviço registrada.</div>';
             }
 
             snapshot.forEach((documento) => {
@@ -119,7 +119,7 @@
                 let classeStatus = '';
                 let textoStatus = '';
                 
-                if(os.status === 'aberta') { classeStatus = 'status-aberta'; textoStatus = 'A aguardar Avaliação'; pendentes++; }
+                if(os.status === 'aberta') { classeStatus = 'status-aberta'; textoStatus = 'Aguardando Avaliação'; pendentes++; }
                 else if(os.status === 'andamento') { classeStatus = 'status-andamento'; textoStatus = 'Na Bancada'; pendentes++; }
                 else { classeStatus = 'status-concluida'; textoStatus = 'Pronto / Entregue'; concluidas++; }
 
@@ -134,7 +134,7 @@
                     <span class="badge-status">${textoStatus}</span>
                     <div class="acoes">
                         <button class="btn-acao btn-avancar" onclick="window.mudarStatus('${idDocumento}', '${os.status}')">Mudar Status</button>
-                        <button class="btn-acao btn-excluir" onclick="window.excluirOS('${idDocumento}')">Eliminar</button>
+                        <button class="btn-acao btn-excluir" onclick="window.excluirOS('${idDocumento}')">Excluir</button>
                     </div>
                 `;
                 containerLista.appendChild(card);
@@ -155,7 +155,7 @@
         }
 
         window.excluirOS = async function(idDocumento) {
-            if(confirm('Tens a certeza que desejas eliminar esta OS da nuvem?')) {
+            if(confirm('Tem certeza de que deseja excluir esta OS da nuvem?')) {
                 await deleteDoc(doc(db, "ordensServico", idDocumento));
             }
         }
